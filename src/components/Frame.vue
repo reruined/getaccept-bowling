@@ -3,14 +3,10 @@ import { computed } from 'vue'
 
 const props = defineProps({
   index: { type: Number, required: true },
-  firstScore: { type: Number },
-  secondScore: { type: Number },
-  sum: { type: Number },
+  balls: { type: Array<Number> },
+  sum: { type: Number }
 })
 
-const firstScore = computed(() => {
-  return props.firstScore || ''
-})
 </script>
 
 <template>
@@ -18,8 +14,9 @@ const firstScore = computed(() => {
     <div class="head">{{ index }}</div>
     <div class="body">
       <div class="scores">
-        <span>{{ firstScore }}</span>
-        <span class="second">{{ secondScore }}</span>
+        <span>{{ balls && balls[0] }}</span>
+        <span class="second">{{ balls && balls[1] }}</span>
+        <span v-if="balls && balls.length === 3" class="second">{{ balls && balls[2] }}</span>
       </div>
       <div class="sum">
         <span>{{ sum }}</span>
