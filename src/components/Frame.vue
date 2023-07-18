@@ -1,11 +1,13 @@
 <script setup lang="ts">
-import { computed } from 'vue'
+const props = defineProps<{
+  index: number,
+  balls?: number[],
+  sum?: number
+}>()
 
-const props = defineProps({
-  index: { type: Number, required: true },
-  balls: { type: Array<Number> },
-  sum: { type: Number }
-})
+function toScoreChar(ball: number) {
+  return ball === 10 ? 'X' : ball
+}
 
 </script>
 
@@ -14,9 +16,9 @@ const props = defineProps({
     <div class="head">{{ index }}</div>
     <div class="body">
       <div class="scores">
-        <span>{{ balls && balls[0] }}</span>
-        <span class="second">{{ balls && balls[1] }}</span>
-        <span v-if="balls && balls.length === 3" class="second">{{ balls && balls[2] }}</span>
+        <span>{{ balls && toScoreChar(balls[0]) }}</span>
+        <span class="second">{{ balls && toScoreChar(balls[1]) }}</span>
+        <span v-if="balls && balls.length === 3" class="second">{{ balls && toScoreChar(balls[2]) }}</span>
       </div>
       <div class="sum">
         <span>{{ sum }}</span>
