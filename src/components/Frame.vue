@@ -1,16 +1,28 @@
 <script setup lang="ts">
+import { computed } from 'vue'
+
+const props = defineProps({
+  index: { type: Number, required: true },
+  firstScore: { type: Number },
+  secondScore: { type: Number },
+  sum: { type: Number },
+})
+
+const firstScore = computed(() => {
+  return props.firstScore || ''
+})
 </script>
 
 <template>
   <div class="frame">
-    <div class="head">1</div>
+    <div class="head">{{ index }}</div>
     <div class="body">
       <div class="scores">
-        <span>2</span>
-        <span class="second">3</span>
+        <span>{{ firstScore }}</span>
+        <span class="second">{{ secondScore }}</span>
       </div>
       <div class="sum">
-        <span>5</span>
+        <span>{{ sum }}</span>
       </div>
     </div>
   </div>
@@ -32,6 +44,7 @@
   background-color: hwb(60 65% 25%);
   text-align: center;
   border-bottom: 2px solid black;
+  padding: 3px 0;
 }
 
 .body {
