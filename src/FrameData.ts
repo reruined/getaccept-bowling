@@ -18,15 +18,14 @@ export class FrameData {
   }
 
   isComplete(): boolean {
-    const isLastFrame = this.id === FRAME_COUNT
-    if (isLastFrame) {
-      // strike
-      if (this.balls.length >= 1 && this.balls[0] === MAX_BALL_VALUE) {
+    if (this.isLastFrame()) {
+      // spare
+      if (this.balls.length >= 2 && this.balls.reduce((sum, ball) => sum + ball) >= MAX_BALL_VALUE) {
         return this.balls.length === 3
       }
 
-      // spare
-      if (this.balls.length >= 2 && this.balls.reduce((sum, ball) => sum + ball) === MAX_BALL_VALUE) {
+      // strike
+      if (this.balls.length >= 1 && this.balls[0] >= MAX_BALL_VALUE) {
         return this.balls.length === 3
       }
     }
@@ -38,5 +37,9 @@ export class FrameData {
 
     // regular
     return this.balls.length === 2
+  }
+
+  isLastFrame(): boolean {
+    return this.id === FRAME_COUNT
   }
 }

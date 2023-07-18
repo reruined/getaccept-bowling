@@ -83,7 +83,17 @@ const balls6 = [
 ]
 
 export default reactive({
-  balls: balls6,
+  balls: [] as number[],
+
+  isFull(): boolean {
+    const frames = this.getFrames()
+    return frames.length === FRAME_COUNT && frames.at(-1)!.isComplete()
+  },
+
+  addBall(ball: number) {
+    console.log(`Ball #${this.balls.length} = ${ball}`)
+    this.balls.push(ball)
+  },
 
   getFrames(): FrameData[] {
     const frames = this.balls.reduce((frames, ball, ballIndex) => {
