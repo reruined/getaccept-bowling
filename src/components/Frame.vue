@@ -29,7 +29,7 @@
 }
 
 .head {
-  background-color: hwb(60 47% 45%);
+  background-color: hwb(60 65% 25%);
   text-align: center;
   border-bottom: 2px solid black;
 }
