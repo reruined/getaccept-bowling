@@ -1,6 +1,6 @@
 import { reactive } from 'vue'
 import { FrameData } from './FrameData'
-import { FRAME_COUNT, MAX_BALL_VALUE } from './scoring'
+import { FRAME_COUNT, STRIKE_VALUE } from './scoring'
 
 const balls1 = [
   2, 2,
@@ -109,11 +109,11 @@ export default reactive({
 
       frame.balls.push(ball)
       frame.sum = frame.balls.reduce((sum, ball) => sum + ball)
-      if (frame.balls[0] === MAX_BALL_VALUE) {
+      if (frame.balls[0] === STRIKE_VALUE) {
         if (ballIndex + 1 < this.balls.length) frame.sum += this.balls[ballIndex + 1]
         if (ballIndex + 2 < this.balls.length) frame.sum += this.balls[ballIndex + 2]
       }
-      else if (frame.balls.reduce((sum, ball) => sum + ball) === MAX_BALL_VALUE) {
+      else if (frame.balls.reduce((sum, ball) => sum + ball) === STRIKE_VALUE) {
         if (ballIndex + 1 < this.balls.length) frame.sum += this.balls[ballIndex + 1]
       }
       if (frames.at(-2)) {

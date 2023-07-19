@@ -1,55 +1,81 @@
 import { describe, it, expect } from 'vitest'
-import { calculateFrameScore, MAX_BALL_VALUE } from '../scoring'
+import { isStrike, isSpare, rollsInFrame, rollsRequiredForScore, pinsRemaining, MAX_PINS, STRIKE_VALUE } from '../scoring'
 
-/*
-describe('Scoring', () => {
-  // Non-terminal frames
-
-  describe('calculating a non-terminal regular frame', () => {
-    it('fails if there are not exactly two thrown balls', () => {
-      expect(() => calculateFrameScore([])).toThrow();
-      expect(() => calculateFrameScore([0])).toThrow();
-      expect(() => calculateFrameScore([0, 0, 0])).toThrow();
-      expect(() => calculateFrameScore([0, 0])).not.toThrow();
-    })
-    it('returns the total number of pins knocked down', () => {
-      expect(calculateFrameScore([5, 3])).eq(8)
-      expect(calculateFrameScore([0, 3])).eq(3)
-      expect(calculateFrameScore([5, 0])).eq(5)
-      expect(calculateFrameScore([0, 0])).eq(0)
-    })
-  })
-  describe('calculating a non-terminal strike frame', () => {
-    it('fails if there is not exactly one thrown ball', () => {
-      expect(() => calculateFrameScore([])).toThrow();
-      expect(() => calculateFrameScore([MAX_BALL_VALUE, 2])).toThrow();
-
-      expect(() => calculateFrameScore([MAX_BALL_VALUE])).not.toThrow();
-    })
-
-  })
-  describe('calculating a non-terminal spare frame', () => {
-    it('fails if there are not exactly two thrown balls', () => {
-
-    })
-  })
-
-  // Final frames
-
-  describe('calculating a final regular frame', () => {
-    it('fails if there are not exactly two thrown balls', () => {
-
-    })
-  })
-  describe('calculating a final strike frame', () => {
-    it('fails if there are not exactly three thrown balls', () => {
-
-    })
-  })
-  describe('calculating a final spare frame', () => {
-    it('fails if there are not exactly three thrown balls', () => {
-
-    })
+describe('isStrike()', () => {
+  it('should identify when the next frame contains a strike', () => {
+    expect(isStrike([10])).toBe(true)
+    expect(isStrike([10, 5])).toBe(true)
+    expect(isStrike([0, 10])).toBe(false)
+    expect(isStrike([5, 5])).toBe(false)
   })
 })
-*/
+
+describe('isSpare()', () => {
+  it('should identify when the next frame contains a spare', () => {
+    expect(isSpare([0, 10])).toBe(true)
+    expect(isSpare([3, 7])).toBe(true)
+    expect(isSpare([7, 3])).toBe(true)
+    expect(isSpare([10, 0])).toBe(false)
+  })
+})
+
+describe('rollsInFrame()', () => {
+  it('should return 1 for a strike in a non-terminal frame', () => {
+    expect(rollsInFrame([10])).toBe(1)
+  })
+  it('should return 3 for a strike in the last frame', () => {
+    expect(rollsInFrame([10], true)).toBe(3)
+  })
+  it('should return 2 for a spare in a non-terminal frame', () => {
+    expect(rollsInFrame([6, 4])).toBe(2)
+  })
+  it('should return 3 for a spare in the last frame', () => {
+    expect(rollsInFrame([6, 4, 5], true)).toBe(3)
+  })
+  it('should return 2 for a regular frame', () => {
+    expect(rollsInFrame([3, 2])).toBe(2)
+    expect(rollsInFrame([3, 2], true)).toBe(2)
+  })
+})
+
+describe('rollsRequiredForScore()', () => {
+  it('should return 3 for a strike', () => {
+    expect(rollsRequiredForScore([10])).toBe(3)
+  })
+  it('should return 3 for a spare', () => {
+    expect(rollsRequiredForScore([8, 2])).toBe(3)
+  })
+  it('should return 2 for a regular frame', () => {
+    expect(rollsRequiredForScore([1, 4])).toBe(2)
+  })
+})
+
+describe('pinsRemaining()', () => {
+  it('should return max for an empty frame', () => {
+    expect(pinsRemaining([])).toBe(MAX_PINS)
+  })
+  it('should return the amount of remaining pins after a roll', () => {
+    expect(pinsRemaining([3])).toBe(MAX_PINS - 3)
+    expect(pinsRemaining([0])).toBe(MAX_PINS - 0)
+    expect(pinsRemaining([10])).toBe(MAX_PINS - 10)
+  })
+
+  describe('for the last frame', () => {
+    it('should return max for an empty frame', () => {
+      expect(pinsRemaining([], true)).toBe(MAX_PINS)
+    })
+    it('should return max after a strike', () => {
+      expect(pinsRemaining([10], true)).toBe(MAX_PINS)
+      expect(pinsRemaining([10, 10], true)).toBe(MAX_PINS)
+    })
+    it('should return max after a spare', () => {
+      expect(pinsRemaining([5, 5], true)).toBe(MAX_PINS)
+      expect(pinsRemaining([0, 10], true)).toBe(MAX_PINS)
+    })
+    it('should return the remaining pins after a regular roll', () => {
+      expect(pinsRemaining([3], true)).toBe(MAX_PINS - 3)
+      expect(pinsRemaining([10, 4], true)).toBe(MAX_PINS - 4)
+    })
+
+  })
+})
