@@ -1,36 +1,18 @@
-import { FRAME_COUNT, STRIKE_VALUE, SPARE_VALUE } from "./scoring"
+import { FRAME_COUNT, rollsInFrame, type Roll } from "./scoring"
 
 export class FrameData {
   readonly id: number
-  balls: number[]
+  rolls: Roll[]
   sum: number
 
   constructor(id: number) {
     this.id = id
-    this.balls = []
+    this.rolls = []
     this.sum = 0
   }
 
   isComplete(): boolean {
-    if (this.isLastFrame()) {
-      // spare
-      if (this.balls.length >= 2 && this.balls.reduce((sum, ball) => sum + ball) >= SPARE_VALUE) {
-        return this.balls.length === 3
-      }
-
-      // strike
-      if (this.balls.length >= 1 && this.balls[0] >= STRIKE_VALUE) {
-        return this.balls.length === 3
-      }
-    }
-
-    // strike
-    if (this.balls.length === 1 && this.balls[0] === STRIKE_VALUE) {
-      return true
-    }
-
-    // regular
-    return this.balls.length === 2
+    return rollsInFrame(this.rolls, this.isLastFrame()) === this.rolls.length
   }
 
   isLastFrame(): boolean {

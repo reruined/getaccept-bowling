@@ -5,7 +5,7 @@ import { FRAME_COUNT, STRIKE_VALUE } from '@/scoring'
 describe('isComplete()', () => {
   it('should return true when the frame contains a strike', () => {
     const frame = new FrameData(1)
-    frame.balls.push(STRIKE_VALUE)
+    frame.rolls.push(STRIKE_VALUE)
     expect(frame.isComplete()).toBe(true)
   })
 
@@ -13,13 +13,13 @@ describe('isComplete()', () => {
   describe('for the last frame', () => {
     it('should return true when the frame contains a strike and has 3 rolls', () => {
       const frame = new FrameData(FRAME_COUNT)
-      frame.balls.push(STRIKE_VALUE)
+      frame.rolls.push(STRIKE_VALUE)
       expect(frame.isComplete()).toBe(false)
 
-      frame.balls.push(STRIKE_VALUE)
+      frame.rolls.push(STRIKE_VALUE)
       expect(frame.isComplete()).toBe(false)
 
-      frame.balls.push(3)
+      frame.rolls.push(3)
       expect(frame.isComplete()).toBe(true)
     })
   })

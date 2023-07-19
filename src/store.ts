@@ -109,13 +109,13 @@ export default reactive({
         frame = frames.at(-1)!
       }
 
-      frame.balls.push(ball)
-      frame.sum = frame.balls.reduce((sum, ball) => sum + ball)
-      if (frame.balls[0] === STRIKE_VALUE) {
+      frame.rolls.push(ball)
+      frame.sum = frame.rolls.reduce((sum, ball) => sum + ball)
+      if (frame.rolls[0] === STRIKE_VALUE) {
         if (ballIndex + 1 < this.balls.length) frame.sum += this.balls[ballIndex + 1]
         if (ballIndex + 2 < this.balls.length) frame.sum += this.balls[ballIndex + 2]
       }
-      else if (frame.balls.reduce((sum, ball) => sum + ball) === STRIKE_VALUE) {
+      else if (frame.rolls.reduce((sum, ball) => sum + ball) === STRIKE_VALUE) {
         if (ballIndex + 1 < this.balls.length) frame.sum += this.balls[ballIndex + 1]
       }
       if (frames.at(-2)) {
