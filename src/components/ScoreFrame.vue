@@ -1,20 +1,20 @@
 <script setup lang="ts">
-import { STRIKE_VALUE, type Roll, isSpare } from '@/scoring';
-import { computed } from 'vue';
+import { STRIKE_VALUE, type Roll, isSpare } from '@/scoring'
+import { computed } from 'vue'
 
 const props = defineProps<{
-  index: number,
-  rolls: Roll[],
-  sum: number | null,
+  index: number
+  rolls: Roll[]
+  sum: number | null
   lastFrame: boolean
 }>()
 
 const rolls = computed(() => {
   let rolls: (number | string)[] = props.rolls
   if (isSpare(props.rolls)) rolls[1] = '/'
-  rolls = rolls.map(roll => roll === STRIKE_VALUE ? 'X' : roll)
+  rolls = rolls.map((roll) => (roll === STRIKE_VALUE ? 'X' : roll))
 
-  return rolls;
+  return rolls
 })
 </script>
 
@@ -25,7 +25,7 @@ const rolls = computed(() => {
       <div class="scores">
         <div class="score-wrapper" v-for="(_, i) in lastFrame ? 3 : 2" :key="i">
           <span :class="rolls.length <= i ? 'hidden' : ''">
-            {{ (rolls.length > i) ? rolls[i] : 0 }}
+            {{ rolls.length > i ? rolls[i] : 0 }}
           </span>
         </div>
       </div>
@@ -45,7 +45,7 @@ const rolls = computed(() => {
   display: inline-block;
   border: 1px solid black;
   font-weight: bold;
-  font-family: "Helvetica Neue", Helvetica, Arial, sans-serif;
+  font-family: 'Helvetica Neue', Helvetica, Arial, sans-serif;
 }
 
 .head {

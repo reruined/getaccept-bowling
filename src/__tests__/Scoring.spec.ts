@@ -1,5 +1,16 @@
 import { describe, it, expect } from 'vitest'
-import { isStrike, isSpare, rollsInFrame, rollsRequiredForScore, pinsRemaining, splitIntoFrameData, calculateScore, MAX_PINS, type Roll, STRIKE_VALUE } from '../scoring'
+import {
+  isStrike,
+  isSpare,
+  rollsInFrame,
+  rollsRequiredForScore,
+  pinsRemaining,
+  splitIntoFrameData,
+  calculateScore,
+  MAX_PINS,
+  type Roll,
+  STRIKE_VALUE
+} from '../scoring'
 
 describe('isStrike()', () => {
   it('should identify when the next frame contains a strike', () => {
@@ -93,16 +104,7 @@ describe('splitIntoFrameData()', () => {
   it('should split a sequence of rolls into complete frames', () => {
     {
       const rolls = [
-        5, 4,
-        3, 2,
-        5, 5,
-        10,
-        10,
-        0, 10,
-        3, 4,
-        0, 2,
-        10,
-        2, 8, 10
+        5, 4, 3, 2, 5, 5, 10, 10, 0, 10, 3, 4, 0, 2, 10, 2, 8, 10
       ] as Roll[]
       const frames = splitIntoFrameData(rolls)
       expect(frames.length).toBe(10)
@@ -118,18 +120,7 @@ describe('splitIntoFrameData()', () => {
       expect(frames[9].rolls).toEqual([2, 8, 10])
     }
     {
-      const rolls = [
-        10,
-        10,
-        10,
-        10,
-        10,
-        10,
-        10,
-        10,
-        10,
-        1, 1
-      ] as Roll[]
+      const rolls = [10, 10, 10, 10, 10, 10, 10, 10, 10, 1, 1] as Roll[]
       const frames = splitIntoFrameData(rolls)
       expect(frames.length).toBe(10)
       expect(frames[0].rolls).toEqual([10])
@@ -148,45 +139,23 @@ describe('splitIntoFrameData()', () => {
 
 describe('calculateScore()', () => {
   it('should properly calculate a regular frame', () => {
-    expect(calculateScore([
-      0, 0
-    ])).toBe(0)
-    expect(calculateScore([
-      3, 4,
-    ])).toBe(7)
-    expect(calculateScore([
-      3, 4,
-      5, 0
-    ])).toBe(7)
+    expect(calculateScore([0, 0])).toBe(0)
+    expect(calculateScore([3, 4])).toBe(7)
+    expect(calculateScore([3, 4, 5, 0])).toBe(7)
   })
 
   it('should properly calculate a strike', () => {
-    expect(calculateScore([
-      STRIKE_VALUE,
-      5, 2
-    ])).toBe(17)
+    expect(calculateScore([STRIKE_VALUE, 5, 2])).toBe(17)
   })
 
   it('should properly calculate a spare', () => {
-    expect(calculateScore([
-      5, 5,
-      5, 2
-    ])).toBe(15)
+    expect(calculateScore([5, 5, 5, 2])).toBe(15)
   })
 
   it('should return null for incomplete frames', () => {
-    expect(calculateScore([
-
-    ])).toBe(null)
-    expect(calculateScore([
-      3,
-    ])).toBe(null)
-    expect(calculateScore([
-      10,
-      10
-    ])).toBe(null)
-    expect(calculateScore([
-      5, 5
-    ])).toBe(null)
+    expect(calculateScore([])).toBe(null)
+    expect(calculateScore([3])).toBe(null)
+    expect(calculateScore([10, 10])).toBe(null)
+    expect(calculateScore([5, 5])).toBe(null)
   })
 })

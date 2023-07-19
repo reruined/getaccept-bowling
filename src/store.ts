@@ -18,5 +18,5 @@ export default reactive({
 
   reset() {
     this.rolls.length = 0
-  },
+  }
 })

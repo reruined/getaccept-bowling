@@ -2,9 +2,9 @@
 import { type Roll, pinsRemaining, FRAME_COUNT } from './scoring'
 import store from './store'
 import ScoreFrame from './components/ScoreFrame.vue'
-import { computed } from 'vue';
-import { FrameData } from './FrameData';
-import { splitIntoFrameData } from './scoring';
+import { computed } from 'vue'
+import { FrameData } from './FrameData'
+import { splitIntoFrameData } from './scoring'
 
 const frames = computed(() => {
   const frames = splitIntoFrameData(store.rolls)
@@ -18,7 +18,7 @@ const frames = computed(() => {
 })
 
 const activeFrame = computed(() => {
-  return frames.value.find(frame => !frame.isComplete())
+  return frames.value.find((frame) => !frame.isComplete())
 })
 
 function addRoll(roll: Roll) {
@@ -30,14 +30,28 @@ function addRoll(roll: Roll) {
   <div class="buttons">
     <button class="reset" @click="store.reset()">Reset</button>
     <div class="pin-buttons" v-if="activeFrame">
-      <button v-for="(_, i) in pinsRemaining(activeFrame.rolls, activeFrame.isLastFrame()) + 1"
-        @click="addRoll(i as Roll)" :key="i">{{ i }}</button>
+      <button
+        v-for="(_, i) in pinsRemaining(
+          activeFrame.rolls,
+          activeFrame.isLastFrame()
+        ) + 1"
+        @click="addRoll(i as Roll)"
+        :key="i"
+      >
+        {{ i }}
+      </button>
     </div>
     <span v-else>Total score = {{ frames[frames.length - 1].sum }}</span>
   </div>
   <div class="frames">
-    <ScoreFrame v-for="frame in frames" :key="frame.id" :index="frame.id" :rolls="frame.rolls" :sum="frame.sum"
-      :last-frame="frame.isLastFrame()" />
+    <ScoreFrame
+      v-for="frame in frames"
+      :key="frame.id"
+      :index="frame.id"
+      :rolls="frame.rolls"
+      :sum="frame.sum"
+      :last-frame="frame.isLastFrame()"
+    />
   </div>
 </template>
 

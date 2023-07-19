@@ -1,18 +1,22 @@
-import { FrameData } from "./FrameData";
+import { FrameData } from './FrameData'
 
 type Roll = 0 | 1 | 2 | 3 | 4 | 5 | 6 | 7 | 8 | 9 | 10
 
 const STRIKE_VALUE = 10
 const SPARE_VALUE = 10
-const MAX_PINS = 10;
-const FRAME_COUNT = 10;
+const MAX_PINS = 10
+const FRAME_COUNT = 10
 
 function isStrike(rolls: Roll[]): boolean {
   return rolls.length >= 1 && rolls[0] === STRIKE_VALUE
 }
 
 function isSpare(rolls: Roll[]): boolean {
-  return rolls.length >= 2 && rolls[0] < STRIKE_VALUE && (rolls[0] + rolls[1]) === SPARE_VALUE
+  return (
+    rolls.length >= 2 &&
+    rolls[0] < STRIKE_VALUE &&
+    rolls[0] + rolls[1] === SPARE_VALUE
+  )
 }
 
 function sum(acc: number, roll: Roll): number {
@@ -52,33 +56,34 @@ function calculateScore(rolls: Roll[]): number | null {
 }
 
 function splitIntoFrameData(rolls: Roll[]): FrameData[] {
-  return rolls.reduce((frames, roll, rollIndex) => {
-    let frame = frames.at(-1)!
-    if (frame.isComplete()) {
-      frames.push(new FrameData(frame.id + 1))
-      frame = frames.at(-1)!
-    }
+  return rolls.reduce(
+    (frames, roll, rollIndex) => {
+      let frame = frames.at(-1)!
+      if (frame.isComplete()) {
+        frames.push(new FrameData(frame.id + 1))
+        frame = frames.at(-1)!
+      }
 
-    // the strange index arithmetic makes sure that the frame's existing rolls are included in the calculation
-    frame.sum = calculateScore(rolls.slice(rollIndex - frame.rolls.length))
-    frame.rolls.push(roll)
-    if (frame.sum !== null) {
-      const prevFrame = frames.at(-2)
-      if (prevFrame && prevFrame.sum !== null) frame.sum += prevFrame.sum
-    }
+      // the strange index arithmetic makes sure that the frame's existing rolls are included in the calculation
+      frame.sum = calculateScore(rolls.slice(rollIndex - frame.rolls.length))
+      frame.rolls.push(roll)
+      if (frame.sum !== null) {
+        const prevFrame = frames.at(-2)
+        if (prevFrame && prevFrame.sum !== null) frame.sum += prevFrame.sum
+      }
 
-    return frames
-  }, [new FrameData(1)])
+      return frames
+    },
+    [new FrameData(1)]
+  )
 }
 
 export {
   type Roll,
-
   STRIKE_VALUE,
   SPARE_VALUE,
   MAX_PINS,
   FRAME_COUNT,
-
   isStrike,
   isSpare,
   rollsInFrame,

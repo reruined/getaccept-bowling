@@ -1,4 +1,4 @@
-import { FRAME_COUNT, rollsInFrame, type Roll } from "./scoring"
+import { FRAME_COUNT, rollsInFrame, type Roll } from './scoring'
 
 export class FrameData {
   readonly id: number
