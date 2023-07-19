@@ -23,15 +23,19 @@ describe('rollsInFrame()', () => {
   it('should return 1 for a strike in a non-terminal frame', () => {
     expect(rollsInFrame([10])).toBe(1)
   })
+
   it('should return 3 for a strike in the last frame', () => {
     expect(rollsInFrame([10], true)).toBe(3)
   })
+
   it('should return 2 for a spare in a non-terminal frame', () => {
     expect(rollsInFrame([6, 4])).toBe(2)
   })
+
   it('should return 3 for a spare in the last frame', () => {
     expect(rollsInFrame([6, 4, 5], true)).toBe(3)
   })
+
   it('should return 2 for a regular frame', () => {
     expect(rollsInFrame([3, 2])).toBe(2)
     expect(rollsInFrame([3, 2], true)).toBe(2)
@@ -42,9 +46,11 @@ describe('rollsRequiredForScore()', () => {
   it('should return 3 for a strike', () => {
     expect(rollsRequiredForScore([10])).toBe(3)
   })
+
   it('should return 3 for a spare', () => {
     expect(rollsRequiredForScore([8, 2])).toBe(3)
   })
+
   it('should return 2 for a regular frame', () => {
     expect(rollsRequiredForScore([1, 4])).toBe(2)
   })
@@ -54,6 +60,7 @@ describe('pinsRemaining()', () => {
   it('should return max for an empty frame', () => {
     expect(pinsRemaining([])).toBe(MAX_PINS)
   })
+
   it('should return the amount of remaining pins after a roll', () => {
     expect(pinsRemaining([3])).toBe(MAX_PINS - 3)
     expect(pinsRemaining([0])).toBe(MAX_PINS - 0)
@@ -64,14 +71,17 @@ describe('pinsRemaining()', () => {
     it('should return max for an empty frame', () => {
       expect(pinsRemaining([], true)).toBe(MAX_PINS)
     })
+
     it('should return max after a strike', () => {
       expect(pinsRemaining([10], true)).toBe(MAX_PINS)
       expect(pinsRemaining([10, 10], true)).toBe(MAX_PINS)
     })
+
     it('should return max after a spare', () => {
       expect(pinsRemaining([5, 5], true)).toBe(MAX_PINS)
       expect(pinsRemaining([0, 10], true)).toBe(MAX_PINS)
     })
+
     it('should return the remaining pins after a regular roll', () => {
       expect(pinsRemaining([3], true)).toBe(MAX_PINS - 3)
       expect(pinsRemaining([10, 4], true)).toBe(MAX_PINS - 4)
@@ -149,18 +159,21 @@ describe('calculateScore()', () => {
       5, 0
     ])).toBe(7)
   })
+
   it('should properly calculate a strike', () => {
     expect(calculateScore([
       STRIKE_VALUE,
       5, 2
     ])).toBe(17)
   })
+
   it('should properly calculate a spare', () => {
     expect(calculateScore([
       5, 5,
       5, 2
     ])).toBe(15)
   })
+
   it('should return null for incomplete frames', () => {
     expect(calculateScore([
 

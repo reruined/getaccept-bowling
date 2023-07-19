@@ -9,7 +9,6 @@ describe('isComplete()', () => {
     expect(frame.isComplete()).toBe(true)
   })
 
-
   describe('for the last frame', () => {
     it('should return true when the frame contains a strike and has 3 rolls', () => {
       const frame = new FrameData(FRAME_COUNT)
@@ -23,13 +22,13 @@ describe('isComplete()', () => {
       expect(frame.isComplete()).toBe(true)
     })
   })
-
 })
 
 describe('isLastFrame()', () => {
   it('should return true for the last frame', () => {
     expect(new FrameData(FRAME_COUNT).isLastFrame()).toBe(true)
   })
+
   it('should return false for non-terminal frames', () => {
     expect(new FrameData(1).isLastFrame()).toBe(false)
     expect(new FrameData(FRAME_COUNT - 1).isLastFrame()).toBe(false)

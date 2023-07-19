@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import { STRIKE_VALUE, type Roll, isSpare, isStrike } from '@/scoring';
+import { STRIKE_VALUE, type Roll, isSpare } from '@/scoring';
 import { computed } from 'vue';
 
 const props = defineProps<{
