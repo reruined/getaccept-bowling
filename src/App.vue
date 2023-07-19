@@ -36,7 +36,8 @@ function addRoll(roll: Roll) {
     <span v-else>Total score = {{ frames[frames.length - 1].sum }}</span>
   </div>
   <div class="frames">
-    <ScoreFrame v-for="frame in frames" :key="frame.id" :index="frame.id" :rolls="frame.rolls" :sum="frame.sum" />
+    <ScoreFrame v-for="frame in frames" :key="frame.id" :index="frame.id" :rolls="frame.rolls" :sum="frame.sum"
+      :last-frame="frame.isLastFrame()" />
   </div>
 </template>
 

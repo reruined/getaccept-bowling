@@ -1,16 +1,21 @@
 <script setup lang="ts">
-import type { Roll } from '@/scoring';
+import { STRIKE_VALUE, type Roll, isSpare, isStrike } from '@/scoring';
+import { computed } from 'vue';
 
-defineProps<{
+const props = defineProps<{
   index: number,
-  rolls?: Roll[],
-  sum: number | null
+  rolls: Roll[],
+  sum: number | null,
+  lastFrame: boolean
 }>()
 
-function toScoreChar(roll: Roll) {
-  return roll === 10 ? 'X' : roll
-}
+const rolls = computed(() => {
+  let rolls: (number | string)[] = props.rolls
+  if (isSpare(props.rolls)) rolls[1] = '/'
+  rolls = rolls.map(roll => roll === STRIKE_VALUE ? 'X' : roll)
 
+  return rolls;
+})
 </script>
 
 <template>
@@ -18,9 +23,11 @@ function toScoreChar(roll: Roll) {
     <div class="head">{{ index }}</div>
     <div class="body">
       <div class="scores">
-        <span>{{ rolls && toScoreChar(rolls[0]) }}</span>
-        <span class="second">{{ rolls && toScoreChar(rolls[1]) }}</span>
-        <span v-if="rolls && rolls.length === 3" class="second">{{ rolls && toScoreChar(rolls[2]) }}</span>
+        <div class="score-wrapper" v-for="(_, i) in lastFrame ? 3 : 2" :key="i">
+          <span :class="rolls.length <= i ? 'hidden' : ''">
+            {{ (rolls.length > i) ? rolls[i] : 0 }}
+          </span>
+        </div>
       </div>
       <div class="sum">
         <span>{{ sum }}</span>
@@ -61,18 +68,23 @@ function toScoreChar(roll: Roll) {
   justify-content: space-evenly;
 }
 
-.scores span {
+.scores .score-wrapper {
   flex: 1;
   text-align: center;
   padding: 3px;
-}
-
-.scores .second {
   border-left: 1px solid black;
   border-bottom: 1px solid black;
 }
 
+.scores .score-wrapper:first-child {
+  border: none;
+}
+
 .sum {
   margin-top: 20px;
+}
+
+.hidden {
+  visibility: hidden;
 }
 </style>
