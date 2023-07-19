@@ -1,5 +1,5 @@
 import { describe, it, expect } from 'vitest'
-import { isStrike, isSpare, rollsInFrame, rollsRequiredForScore, pinsRemaining, splitIntoFrameData, calculateScore, MAX_PINS, type Roll, STRIKE_VALUE, SPARE_VALUE } from '../scoring'
+import { isStrike, isSpare, rollsInFrame, rollsRequiredForScore, pinsRemaining, splitIntoFrameData, calculateScore, MAX_PINS, type Roll, STRIKE_VALUE } from '../scoring'
 
 describe('isStrike()', () => {
   it('should identify when the next frame contains a strike', () => {

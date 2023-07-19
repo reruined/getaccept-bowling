@@ -1,7 +1,7 @@
 <script setup lang="ts">
 import type { Roll } from '@/scoring';
 
-const props = defineProps<{
+defineProps<{
   index: number,
   rolls?: Roll[],
   sum: number | null

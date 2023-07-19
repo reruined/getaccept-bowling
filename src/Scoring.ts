@@ -7,15 +7,6 @@ const SPARE_VALUE = 10
 const MAX_PINS = 10;
 const FRAME_COUNT = 10;
 
-enum FrameStatus {
-  Empty,
-  InProgress,
-  Regular,
-  Strike,
-  Spare,
-  Invalid
-}
-
 function isStrike(rolls: Roll[]): boolean {
   return rolls.length >= 1 && rolls[0] === STRIKE_VALUE
 }
@@ -53,7 +44,7 @@ function pinsRemaining(rolls: Roll[], isLastFrame: boolean = false): number {
   return MAX_PINS - rolls[0]
 }
 
-function calculateScore(rolls: Roll[], isLastFrame: boolean = false): number | null {
+function calculateScore(rolls: Roll[]): number | null {
   const rollsRequired = rollsRequiredForScore(rolls)
   if (rolls.length < rollsRequired) return null
 
@@ -69,7 +60,7 @@ function splitIntoFrameData(rolls: Roll[]): FrameData[] {
     }
 
     // the strange index arithmetic makes sure that the frame's existing rolls are included in the calculation
-    frame.sum = calculateScore(rolls.slice(rollIndex - frame.rolls.length), frame.isLastFrame())
+    frame.sum = calculateScore(rolls.slice(rollIndex - frame.rolls.length))
     frame.rolls.push(roll)
     if (frame.sum !== null) {
       const prevFrame = frames.at(-2)
