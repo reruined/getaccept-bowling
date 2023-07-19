@@ -123,6 +123,10 @@ export default reactive({
       return frames
     }, [new FrameData(1)])
 
+    for (let i = frames.length; i < FRAME_COUNT; i++) {
+      frames.push(new FrameData(i + 1))
+    }
+
     return frames
   }
 
