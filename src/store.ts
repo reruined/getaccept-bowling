@@ -91,6 +91,8 @@ export default reactive({
   },
 
   addBall(ball: number) {
+    if (this.isFull()) return
+
     console.log(`Ball #${this.balls.length} = ${ball}`)
     this.balls.push(ball)
   },

@@ -23,6 +23,7 @@ function addBall(ball: number) {
     <button class="reset" @click="store.reset()">Reset</button>
     <button v-if="activeFrame" v-for="(_, i) in pinsRemaining(activeFrame.balls as Roll[], activeFrame.isLastFrame()) + 1"
       @click="addBall(i)">{{ i }}</button>
+    <span v-else>Total score = {{ frames[frames.length - 1].sum }}</span>
   </div>
   <div class="frames">
     <Frame v-for="frame in frames" :key="frame.id" :index="frame.id" :balls="frame.balls" :sum="frame.sum" />
