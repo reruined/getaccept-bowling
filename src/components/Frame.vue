@@ -1,12 +1,14 @@
 <script setup lang="ts">
+import type { Roll } from '@/scoring';
+
 const props = defineProps<{
   index: number,
-  balls?: number[],
+  rolls?: Roll[],
   sum?: number
 }>()
 
-function toScoreChar(ball: number) {
-  return ball === 10 ? 'X' : ball
+function toScoreChar(roll: Roll) {
+  return roll === 10 ? 'X' : roll
 }
 
 </script>
@@ -16,9 +18,9 @@ function toScoreChar(ball: number) {
     <div class="head">{{ index }}</div>
     <div class="body">
       <div class="scores">
-        <span>{{ balls && toScoreChar(balls[0]) }}</span>
-        <span class="second">{{ balls && toScoreChar(balls[1]) }}</span>
-        <span v-if="balls && balls.length === 3" class="second">{{ balls && toScoreChar(balls[2]) }}</span>
+        <span>{{ rolls && toScoreChar(rolls[0]) }}</span>
+        <span class="second">{{ rolls && toScoreChar(rolls[1]) }}</span>
+        <span v-if="rolls && rolls.length === 3" class="second">{{ rolls && toScoreChar(rolls[2]) }}</span>
       </div>
       <div class="sum">
         <span>{{ sum }}</span>

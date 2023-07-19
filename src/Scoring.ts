@@ -26,12 +26,12 @@ function sum(acc: number, val: number) {
   return acc + val
 }
 
-function getFrameStatus(balls: Array<number>) {
-  if (balls.length === 0) return FrameStatus.Empty
-  if (balls[0] === STRIKE_VALUE) return FrameStatus.Strike
-  if (balls.reduce(sum, 0) === STRIKE_VALUE) return FrameStatus.Spare
-  if (balls.length === 1) return FrameStatus.InProgress
-  if (balls.length === 2) return FrameStatus.Regular
+function getFrameStatus(rolls: Array<Roll>) {
+  if (rolls.length === 0) return FrameStatus.Empty
+  if (rolls[0] === STRIKE_VALUE) return FrameStatus.Strike
+  if (rolls.reduce(sum, 0) === STRIKE_VALUE) return FrameStatus.Spare
+  if (rolls.length === 1) return FrameStatus.InProgress
+  if (rolls.length === 2) return FrameStatus.Regular
 
   return FrameStatus.Invalid
 }
@@ -60,22 +60,6 @@ function pinsRemaining(rolls: Roll[], isLastFrame: boolean = false): number {
 
   return MAX_PINS - rolls[0]
 }
-/*
-function getMaxPins() {
-  const activeFrame = getActiveFrame()
-
-  if (activeFrame.isLastFrame()) {
-    if (activeFrame.balls.length >= 1 && (activeFrame.balls[0] === MAX_BALL_VALUE || activeFrame.balls.reduce((sum, ball) => sum + ball) === MAX_BALL_VALUE)) {
-      return MAX_PINS
-    }
-  }
-  if (!activeFrame.isComplete() && activeFrame.balls.length > 0) {
-    return MAX_PINS - activeFrame.balls[0]
-  }
-
-  return MAX_PINS
-}
-*/
 
 export {
   type Roll,

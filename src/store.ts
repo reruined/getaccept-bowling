@@ -1,8 +1,8 @@
 import { reactive } from 'vue'
 import { FrameData } from './FrameData'
-import { FRAME_COUNT, STRIKE_VALUE } from './scoring'
+import { FRAME_COUNT, STRIKE_VALUE, type Roll } from './scoring'
 
-const balls1 = [
+const rolls1 = [
   2, 2,
   1, 1,
   3, 3,
@@ -15,7 +15,7 @@ const balls1 = [
   3, 0
 ]
 
-const balls2 = [
+const rolls2 = [
   10,
   1, 1,
   3, 3,
@@ -28,7 +28,7 @@ const balls2 = [
   3, 0
 ]
 
-const balls3 = [
+const rolls3 = [
   10,
   1, 1,
   3, 3,
@@ -41,7 +41,7 @@ const balls3 = [
   3, 0
 ]
 
-const balls4 = [
+const rolls4 = [
   10,
   4, 4,
   10,
@@ -54,7 +54,7 @@ const balls4 = [
   3, 2
 ]
 
-const balls5 = [
+const rolls5 = [
   10,
   10,
   10,
@@ -69,7 +69,7 @@ const balls5 = [
   10
 ]
 
-const balls6 = [
+const rolls6 = [
   10,
   2, 1,
   5, 5,
@@ -83,40 +83,40 @@ const balls6 = [
 ]
 
 export default reactive({
-  balls: [] as number[],
+  rolls: [] as Roll[],
 
   isFull(): boolean {
     const frames = this.getFrames()
     return frames.length === FRAME_COUNT && frames.at(-1)!.isComplete()
   },
 
-  addBall(ball: number) {
+  addRoll(roll: Roll) {
     if (this.isFull()) return
 
-    console.log(`Ball #${this.balls.length} = ${ball}`)
-    this.balls.push(ball)
+    console.log(`Roll #${this.rolls.length} = ${roll}`)
+    this.rolls.push(roll)
   },
 
   reset() {
-    this.balls.length = 0
+    this.rolls.length = 0
   },
 
   getFrames(): FrameData[] {
-    const frames = this.balls.reduce((frames, ball, ballIndex) => {
+    const frames = this.rolls.reduce((frames, roll, rollIndex) => {
       let frame = frames.at(-1)!
       if (frame.isComplete()) {
         frames.push(new FrameData(frame.id + 1))
         frame = frames.at(-1)!
       }
 
-      frame.rolls.push(ball)
-      frame.sum = frame.rolls.reduce((sum, ball) => sum + ball)
+      frame.rolls.push(roll)
+      frame.sum = frame.rolls.reduce((sum: number, roll: Roll) => sum + (roll as number), 0)
       if (frame.rolls[0] === STRIKE_VALUE) {
-        if (ballIndex + 1 < this.balls.length) frame.sum += this.balls[ballIndex + 1]
-        if (ballIndex + 2 < this.balls.length) frame.sum += this.balls[ballIndex + 2]
+        if (rollIndex + 1 < this.rolls.length) frame.sum += this.rolls[rollIndex + 1]
+        if (rollIndex + 2 < this.rolls.length) frame.sum += this.rolls[rollIndex + 2]
       }
-      else if (frame.rolls.reduce((sum, ball) => sum + ball) === STRIKE_VALUE) {
-        if (ballIndex + 1 < this.balls.length) frame.sum += this.balls[ballIndex + 1]
+      else if (frame.rolls.reduce((sum: number, roll: Roll) => sum + (roll as number), 0) === STRIKE_VALUE) {
+        if (rollIndex + 1 < this.rolls.length) frame.sum += this.rolls[rollIndex + 1]
       }
       if (frames.at(-2)) {
         frame.sum += frames.at(-2)!.sum
