@@ -1,6 +1,6 @@
 import { reactive } from 'vue'
 import { FrameData } from './FrameData'
-import { FRAME_COUNT, MAX_BALL_VALUE } from './Scoring'
+import { FRAME_COUNT, MAX_BALL_VALUE } from './scoring'
 
 const balls1 = [
   2, 2,

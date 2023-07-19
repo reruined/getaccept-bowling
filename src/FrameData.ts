@@ -4,7 +4,7 @@
   sum: number;
 }*/
 
-import { FRAME_COUNT, MAX_BALL_VALUE } from "./Scoring"
+import { FRAME_COUNT, MAX_BALL_VALUE } from "./scoring"
 
 export class FrameData {
   readonly id: number
