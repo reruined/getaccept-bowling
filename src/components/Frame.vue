@@ -4,7 +4,7 @@ import type { Roll } from '@/scoring';
 const props = defineProps<{
   index: number,
   rolls?: Roll[],
-  sum?: number
+  sum: number | null
 }>()
 
 function toScoreChar(roll: Roll) {

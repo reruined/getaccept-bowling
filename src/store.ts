@@ -1,6 +1,5 @@
 import { reactive } from 'vue'
-import { FrameData } from './FrameData'
-import { FRAME_COUNT, STRIKE_VALUE, type Roll } from './scoring'
+import { FRAME_COUNT, type Roll, splitIntoFrameData } from './scoring'
 
 const rolls1 = [
   2, 2,
@@ -86,7 +85,7 @@ export default reactive({
   rolls: [] as Roll[],
 
   isFull(): boolean {
-    const frames = this.getFrames()
+    const frames = splitIntoFrameData(this.rolls)
     return frames.length === FRAME_COUNT && frames.at(-1)!.isComplete()
   },
 
@@ -101,6 +100,7 @@ export default reactive({
     this.rolls.length = 0
   },
 
+  /*
   getFrames(): FrameData[] {
     const frames = this.rolls.reduce((frames, roll, rollIndex) => {
       let frame = frames.at(-1)!
@@ -131,6 +131,7 @@ export default reactive({
 
     return frames
   }
+  */
 
   /*
   getFrames(): FrameData[] {

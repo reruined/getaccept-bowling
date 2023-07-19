@@ -1,3 +1,5 @@
+import { FrameData } from "./FrameData";
+
 type Roll = 0 | 1 | 2 | 3 | 4 | 5 | 6 | 7 | 8 | 9 | 10
 
 const STRIKE_VALUE = 10
@@ -22,18 +24,8 @@ function isSpare(rolls: Roll[]): boolean {
   return rolls.length >= 2 && rolls[0] < STRIKE_VALUE && (rolls[0] + rolls[1]) === SPARE_VALUE
 }
 
-function sum(acc: number, val: number) {
-  return acc + val
-}
-
-function getFrameStatus(rolls: Array<Roll>) {
-  if (rolls.length === 0) return FrameStatus.Empty
-  if (rolls[0] === STRIKE_VALUE) return FrameStatus.Strike
-  if (rolls.reduce(sum, 0) === STRIKE_VALUE) return FrameStatus.Spare
-  if (rolls.length === 1) return FrameStatus.InProgress
-  if (rolls.length === 2) return FrameStatus.Regular
-
-  return FrameStatus.Invalid
+function sum(acc: number, roll: Roll): number {
+  return acc + roll
 }
 
 function rollsInFrame(rolls: Roll[], isLastFrame: boolean = false) {
@@ -61,6 +53,33 @@ function pinsRemaining(rolls: Roll[], isLastFrame: boolean = false): number {
   return MAX_PINS - rolls[0]
 }
 
+function calculateScore(rolls: Roll[], isLastFrame: boolean = false): number | null {
+  const rollsRequired = rollsRequiredForScore(rolls)
+  if (rolls.length < rollsRequired) return null
+
+  return rolls.slice(0, rollsRequired).reduce(sum, 0)
+}
+
+function splitIntoFrameData(rolls: Roll[]): FrameData[] {
+  return rolls.reduce((frames, roll, rollIndex) => {
+    let frame = frames.at(-1)!
+    if (frame.isComplete()) {
+      frames.push(new FrameData(frame.id + 1))
+      frame = frames.at(-1)!
+    }
+
+    // the strange index arithmetic makes sure that the frame's existing rolls are included in the calculation
+    frame.sum = calculateScore(rolls.slice(rollIndex - frame.rolls.length), frame.isLastFrame())
+    frame.rolls.push(roll)
+    if (frame.sum !== null) {
+      const prevFrame = frames.at(-2)
+      if (prevFrame && prevFrame.sum !== null) frame.sum += prevFrame.sum
+    }
+
+    return frames
+  }, [new FrameData(1)])
+}
+
 export {
   type Roll,
 
@@ -73,5 +92,7 @@ export {
   isSpare,
   rollsInFrame,
   rollsRequiredForScore,
-  pinsRemaining
+  pinsRemaining,
+  splitIntoFrameData,
+  calculateScore
 }

@@ -1,11 +1,20 @@
 <script setup lang="ts">
-import { type Roll, pinsRemaining } from './scoring'
+import { type Roll, pinsRemaining, FRAME_COUNT } from './scoring'
 import store from './store'
 import Frame from './components/Frame.vue'
 import { computed } from 'vue';
+import { FrameData } from './FrameData';
+import { splitIntoFrameData } from './scoring';
 
 const frames = computed(() => {
-  return store.getFrames()
+  const frames = splitIntoFrameData(store.rolls)
+
+  // make sure we always have FRAME_COUNT frames
+  for (let i = frames.length; i < FRAME_COUNT; i++) {
+    frames.push(new FrameData(i + 1))
+  }
+
+  return frames
 })
 
 const activeFrame = computed(() => {

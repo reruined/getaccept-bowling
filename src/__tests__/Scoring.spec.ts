@@ -1,5 +1,5 @@
 import { describe, it, expect } from 'vitest'
-import { isStrike, isSpare, rollsInFrame, rollsRequiredForScore, pinsRemaining, MAX_PINS, STRIKE_VALUE } from '../scoring'
+import { isStrike, isSpare, rollsInFrame, rollsRequiredForScore, pinsRemaining, splitIntoFrameData, calculateScore, MAX_PINS, type Roll, STRIKE_VALUE, SPARE_VALUE } from '../scoring'
 
 describe('isStrike()', () => {
   it('should identify when the next frame contains a strike', () => {
@@ -76,6 +76,104 @@ describe('pinsRemaining()', () => {
       expect(pinsRemaining([3], true)).toBe(MAX_PINS - 3)
       expect(pinsRemaining([10, 4], true)).toBe(MAX_PINS - 4)
     })
+  })
+})
 
+describe('splitIntoFrameData()', () => {
+  it('should split a sequence of rolls into complete frames', () => {
+    {
+      const rolls = [
+        5, 4,
+        3, 2,
+        5, 5,
+        10,
+        10,
+        0, 10,
+        3, 4,
+        0, 2,
+        10,
+        2, 8, 10
+      ] as Roll[]
+      const frames = splitIntoFrameData(rolls)
+      expect(frames.length).toBe(10)
+      expect(frames[0].rolls).toEqual([5, 4])
+      expect(frames[1].rolls).toEqual([3, 2])
+      expect(frames[2].rolls).toEqual([5, 5])
+      expect(frames[3].rolls).toEqual([10])
+      expect(frames[4].rolls).toEqual([10])
+      expect(frames[5].rolls).toEqual([0, 10])
+      expect(frames[6].rolls).toEqual([3, 4])
+      expect(frames[7].rolls).toEqual([0, 2])
+      expect(frames[8].rolls).toEqual([10])
+      expect(frames[9].rolls).toEqual([2, 8, 10])
+    }
+    {
+      const rolls = [
+        10,
+        10,
+        10,
+        10,
+        10,
+        10,
+        10,
+        10,
+        10,
+        1, 1
+      ] as Roll[]
+      const frames = splitIntoFrameData(rolls)
+      expect(frames.length).toBe(10)
+      expect(frames[0].rolls).toEqual([10])
+      expect(frames[1].rolls).toEqual([10])
+      expect(frames[2].rolls).toEqual([10])
+      expect(frames[3].rolls).toEqual([10])
+      expect(frames[4].rolls).toEqual([10])
+      expect(frames[5].rolls).toEqual([10])
+      expect(frames[6].rolls).toEqual([10])
+      expect(frames[7].rolls).toEqual([10])
+      expect(frames[8].rolls).toEqual([10])
+      expect(frames[9].rolls).toEqual([1, 1])
+    }
+  })
+})
+
+describe('calculateScore()', () => {
+  it('should properly calculate a regular frame', () => {
+    expect(calculateScore([
+      0, 0
+    ])).toBe(0)
+    expect(calculateScore([
+      3, 4,
+    ])).toBe(7)
+    expect(calculateScore([
+      3, 4,
+      5, 0
+    ])).toBe(7)
+  })
+  it('should properly calculate a strike', () => {
+    expect(calculateScore([
+      STRIKE_VALUE,
+      5, 2
+    ])).toBe(17)
+  })
+  it('should properly calculate a spare', () => {
+    expect(calculateScore([
+      5, 5,
+      5, 2
+    ])).toBe(15)
+  })
+  it('should return null for incomplete frames', () => {
+    expect(calculateScore([
+
+    ])).toBe(null)
+    expect(calculateScore([
+      3,
+    ])).toBe(null)
+    expect(calculateScore([
+      10,
+      10
+    ])).toBe(null)
+    expect(calculateScore([
+      5, 5
+    ])).toBe(null)
   })
 })
