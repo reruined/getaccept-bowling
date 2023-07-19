@@ -1,7 +1,6 @@
 import { describe, it, expect } from 'vitest'
 import { calculateFrameScore, MAX_BALL_VALUE } from '../scoring'
 
-
 /*
 describe('Scoring', () => {
   // Non-terminal frames

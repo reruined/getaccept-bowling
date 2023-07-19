@@ -35,6 +35,7 @@ function getMaxPins() {
 
 <template>
   <div class="buttons">
+    <button class="reset" @click="store.reset()">Reset</button>
     <button v-for="(_, i) in getMaxPins() + 1" @click="addBall(i)">{{ i }}</button>
   </div>
   <div class="frames">
@@ -42,4 +43,13 @@ function getMaxPins() {
   </div>
 </template>
 
-<style scoped></style>
+<style scoped>
+.buttons button {
+  margin-right: 0.25em;
+}
+
+.buttons .reset {
+  display: block;
+  margin-bottom: 0.25em;
+}
+</style>

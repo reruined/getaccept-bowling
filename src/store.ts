@@ -95,6 +95,10 @@ export default reactive({
     this.balls.push(ball)
   },
 
+  reset() {
+    this.balls.length = 0
+  },
+
   getFrames(): FrameData[] {
     const frames = this.balls.reduce((frames, ball, ballIndex) => {
       let frame = frames.at(-1)!

@@ -32,7 +32,7 @@ function toScoreChar(ball: number) {
   width: 100px;
   height: 100px;
   background-color: beige;
-  margin: 5px;
+  margin: 5px 5px 5px 0;
   display: inline-block;
   border: 1px solid black;
   font-weight: bold;
